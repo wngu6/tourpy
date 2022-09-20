@@ -1,9 +1,7 @@
 import numpy as np
-
 from vispy.gloo import VertexBuffer
 from vispy.visuals import Visual
 from vispy.visuals.shaders import Function
-from vispy.color import ColorArray
 
 vert = """
 #version 120
@@ -81,20 +79,20 @@ float disc(vec2 pointcoord, float size) {
 }
 """
 
-_marker_dict = {
-    "disc": disc
-}
+_marker_dict = {"disc": disc}
+
 
 class MarkersVisual(Visual):
-
-    def __init__(self, data, color, symbol="disc", size=3):
+    def __init__(self, data, color, symbol: str = "disc", size: int = 3):
         Visual.__init__(self, vert, frag)
 
         self.size = size
         self.symbol = symbol
-    
+
         self.shared_program["a_position"] = np.float32(data)
-        self.shared_program["a_size"] = np.repeat(self.size, data.shape[0]).astype(np.float32)
+        self.shared_program["a_size"] = np.repeat(self.size, data.shape[0]).astype(
+            np.float32
+        )
         self.shared_program["a_color"] = VertexBuffer(color.rgba)
         self._draw_mode = "points"
 
@@ -113,7 +111,9 @@ class MarkersVisual(Visual):
         self.update()
 
     def _prepare_draw(self, view):
-        self.set_gl_state(depth_test=True, blend_func=("src_alpha", "one_minus_src_alpha"))
+        self.set_gl_state(
+            depth_test=True, blend_func=("src_alpha", "one_minus_src_alpha")
+        )
         view.view_program["u_px_scale"] = view.transforms.pixel_scale
         view.view_program["u_scale"] = 1
 
