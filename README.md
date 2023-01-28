@@ -1,4 +1,4 @@
-An implementation of the tour algorithm in Python, leveraging the power of the GPU to render millions of data points.
+An implementation of the tour algorithm in Python, leveraging the power of the GPU to render millions of data points using the vispy library.
 
 
 Licensing
